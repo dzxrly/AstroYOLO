@@ -5,9 +5,9 @@
 ## Environment
 
 > - Ubuntu Server 22.04 LTS
->  - Python 3.10.8
->  - CUDA 11.7
->  - CUDNN 8.5
+> - Python 3.10.8
+> - CUDA 11.7
+> - CUDNN 8.5
 
 Create a new conda environment and install the required packages:
 
