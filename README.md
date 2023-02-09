@@ -2,6 +2,8 @@
 
 ![Network Structure](./img/network_structure.png)
 
+![RPCurve&PredictionVis](./img/img_2.png)
+
 ## Environment
 
 > - Ubuntu Server 22.04 LTS
