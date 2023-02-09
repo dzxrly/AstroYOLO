@@ -3,9 +3,7 @@ import argparse
 import torch.cuda as cuda
 from tensorboardX import SummaryWriter
 from torch.utils.data import DataLoader
-from tqdm import tqdm
 
-import config.model_config as cfg
 import utils.datasets as data
 import utils.gpu as gpu
 from eval.evaluator import *
@@ -19,10 +17,10 @@ os.environ["CUDA_VISIBLE_DEVICES"] = '0'
 
 
 class Trainer(object):
-    def __init__(self, gpu_id=0, fp_16=False):
+    def __init__(self, gpu_id=0):
         super(Trainer, self).__init__()
         init_seeds(0)
-        self.fp_16 = fp_16
+        self.fp_16 = cfg.TRAIN['amp']
         self.device = gpu.select_device(gpu_id)
         self.start_epoch = 0
         self.best_mAP = 0.0
@@ -88,10 +86,9 @@ class Trainer(object):
         def is_valid_number(x):
             return not (math.isnan(x) or math.isinf(x) or x > 1e4)
 
-        grad_scaler = None
+        grad_scaler = cuda.amp.GradScaler(enabled=True)
         if self.fp_16:
             print('Using torch.amp fp16 training.')
-            grad_scaler = cuda.amp.GradScaler(enabled=True)
         for epoch in range(self.start_epoch, self.epochs):
             self.yolov4.train()
             mloss = torch.zeros(4)
@@ -121,15 +118,10 @@ class Trainer(object):
                             lbboxes,
                         )
                     if is_valid_number(loss.item()):
-                        if self.fp_16:
-                            grad_scaler.scale(loss).backward()
-                            grad_scaler.step(self.optimizer)
-                            grad_scaler.update()
-                            self.optimizer.zero_grad()
-                        else:
-                            loss.backward()
-                            self.optimizer.step()
-                            self.optimizer.zero_grad()
+                        grad_scaler.scale(loss).backward()
+                        grad_scaler.step(self.optimizer)
+                        grad_scaler.update()
+                        self.optimizer.zero_grad()
                         loss_items = torch.tensor([loss_ciou, loss_conf, loss_cls, loss])
                         mloss = (mloss * i + loss_items) / (i + 1)
                         writer.add_scalar('loss/ciou', mloss[0], epoch * len(self.train_dataloader) + i)
@@ -160,6 +152,5 @@ class Trainer(object):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-g', '--gpu_id', type=int, default=0, help='whither use GPU(0) or CPU(-1)')
-    parser.add_argument('-m', '--fp_16', type=bool, default=False, help='whither to use fp16 precision')
     opt = parser.parse_args()
-    Trainer(gpu_id=opt.gpu_id, fp_16=opt.fp_16).train()
+    Trainer(gpu_id=opt.gpu_id).train()

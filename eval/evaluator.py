@@ -6,18 +6,15 @@ from multiprocessing.dummy import Pool as ThreadPool  # 线程池
 
 from tqdm import tqdm
 
-import config.model_config as cfg
 from eval import voc_eval
 from utils.data_augment import *
-from utils.heatmap import imshowAtt
 from utils.tools import *
-from utils.visualize import *
 
 current_milli_time = lambda: int(round(time.time() * 1000))
 
 
 class Evaluator(object):
-    def __init__(self, model=None, showatt=False, dataset_type='valid'):
+    def __init__(self, model=None, dataset_type='valid'):
         assert dataset_type in ['valid', 'test', 'none'], '[Error]: dataset_type must be valid or test or none'
         self.classes = cfg.Customer_DATA["CLASSES"]
         self.pred_result_path = os.path.join(cfg.PROJECT_PATH, "pred_result")
@@ -32,7 +29,6 @@ class Evaluator(object):
         self.visual_imgs = 0
         self.multi_scale_test = cfg.VAL["MULTI_SCALE_VAL"]
         self.flip_test = cfg.VAL["FLIP_VAL"]
-        self.showatt = showatt
         self.inference_time = 0.0
         self.final_result = defaultdict(list)
         self.txt_filename = '{}.txt'.format(dataset_type) if dataset_type != 'none' else None
@@ -117,21 +113,13 @@ class Evaluator(object):
         self.model.eval()
         with torch.no_grad():
             start_time = current_milli_time()
-            if self.showatt:
-                _, p_d, atten = self.model(img)
-            else:
-                _, p_d = self.model(img)
+            _, p_d = self.model(img)
             self.inference_time += current_milli_time() - start_time
         pred_bbox = p_d.squeeze().cpu().numpy()
         bboxes = self.__convert_pred(
             pred_bbox, test_shape, (org_h, org_w), valid_scale
         )
-        if self.showatt and len(img) and mode == 'det':
-            self.__show_heatmap(atten, org_img)
         return bboxes
-
-    def __show_heatmap(self, beta, img):
-        imshowAtt(beta, img)
 
     def __get_img_tensor(self, img, test_shape):
         img = Resize((test_shape, test_shape), correct_box=False)(

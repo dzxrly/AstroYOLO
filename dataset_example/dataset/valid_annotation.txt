@@ -1,0 +1,2 @@
+your dataset path/dataset/VOC2007/JPEGImages/dataset_image_3.npy x1,y1,x2,y2,class
+your dataset path/dataset/VOC2007/JPEGImages/dataset_image_4.npy x1,y1,x2,y2,class

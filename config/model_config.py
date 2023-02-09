@@ -1,38 +1,33 @@
 import os.path as osp
 
 PROJECT_PATH = osp.abspath(osp.join(osp.dirname(__file__), '..'))
-DATA_PATH = osp.join('./bhb/352x352/C0')
+DATA_PATH = osp.join('dataset_example/dataset')  # your dataset path (absolute path is recommended)
 
 # train
 TRAIN = {
-    'TRAIN_IMG_SIZE': 352,
-    'AUGMENT': False,
-    'BATCH_SIZE': 16,
-    'MULTI_SCALE_TRAIN': False,
-    'IOU_THRESHOLD_LOSS': 0.5,
-    'YOLO_EPOCHS': 120,
-    'Mobilenet_YOLO_EPOCHS': 200,
-    'NUMBER_WORKERS': 8,
-    'MOMENTUM': 0.9,
-    'WEIGHT_DECAY': 0.005,
-    'LR_INIT': 1e-3,
-    'LR_END': 1e-8,
-    'WARMUP_EPOCHS': 50,  # or None
-    'showatt': False
+    'amp': True,  # use amp or not
+    'TRAIN_IMG_SIZE': 352,  # training image size
+    'BATCH_SIZE': 16,  # training batch size
+    'IOU_THRESHOLD_LOSS': 0.5,  # iou threshold for loss
+    'YOLO_EPOCHS': 120,  # total training epochs
+    'NUMBER_WORKERS': 8,  # number of workers for dataloader
+    'MOMENTUM': 0.9,  # SGD momentum
+    'WEIGHT_DECAY': 0.005,  # SGD weight decay
+    'LR_INIT': 1e-3,  # initial learning rate
+    'LR_END': 1e-8,  # end learning rate
+    'WARMUP_EPOCHS': 50,  # warmup epochs
 }
 
 # val
 VAL = {
-    'EVAL_EPOCH': 30,
-    'TEST_IMG_SIZE': 352,
-    'BATCH_SIZE': 16,
-    'NUMBER_WORKERS': 8,
-    'CONF_THRESH': 0.005,
-    'NMS_THRESH': 0.45,
+    'EVAL_EPOCH': 30,  # evaluation begin epoch
+    'TEST_IMG_SIZE': 352,  # test image size, be same as training image size!
+    'BATCH_SIZE': 16,  # test batch size, be same as training batch size!
+    'NUMBER_WORKERS': 8,  # number of workers for dataloader
+    'CONF_THRESH': 0.005,  # confidence threshold for evaluation
+    'NMS_THRESH': 0.45,  # nms threshold for evaluation
     'MULTI_SCALE_VAL': False,
     'FLIP_VAL': False,
-    'Visual': False,
-    'showatt': False
 }
 
 Customer_DATA = {
@@ -42,7 +37,7 @@ Customer_DATA = {
 
 # model
 MODEL = {
-    'ANCHORS': [
+    'ANCHORS': [  # anchors for three scale, be careful to change it!!!
         [
             (1.25, 1.625),
             (2.0, 3.75),

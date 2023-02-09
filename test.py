@@ -15,9 +15,7 @@ os.environ['CUDA_VISIBLE_DEVICES'] = '1'
 def pred(pred_model, pred_class_num, iou_thresh=0.5):
     mAP = 0.0
     with torch.no_grad():
-        APs, inference_time = Evaluator(
-            pred_model, showatt=cfg.VAL['showatt'], dataset_type='test'
-        ).APs_voc(iou_thresh=iou_thresh)
+        APs, inference_time = Evaluator(pred_model, dataset_type='test').APs_voc(iou_thresh=iou_thresh)
         for i in APs:
             mAP += APs[i]
         mAP /= pred_class_num
@@ -25,7 +23,7 @@ def pred(pred_model, pred_class_num, iou_thresh=0.5):
 
 
 if __name__ == '__main__':
-    model_path = os.path.join('./files/trans_C1/best.pt')
+    model_path = os.path.join('./files/your model path/best.pt')
     print('Loading model from [{}]'.format(model_path))
     device = gpu.select_device(id=0)
     model = BuildModel().to(device)

@@ -1,0 +1,25 @@
+<annotation>
+  <folder>VOC2007</folder>
+  <filename>dataset_image_2.npy</filename>
+  <source>
+    <database>dataset name</database>
+  </source>
+  <size>
+    <width>be same as your configuration</width>
+    <height>be same as your configuration</height>
+    <depth>3 (channels)</depth>
+  </size>
+  <segmented>0</segmented>
+  <object>
+    <name>bounding class name</name>
+    <pose>Unspecified</pose>
+    <truncated>0</truncated>
+    <difficult>0</difficult>
+    <bndbox>
+      <xmin>x1</xmin>
+      <ymin>y1</ymin>
+      <xmax>x2</xmax>
+      <ymax>y2</ymax>
+    </bndbox>
+  </object>
+</annotation>
