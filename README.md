@@ -47,4 +47,4 @@ e.g. `dataset_example/dataset`)
 │   ├── test_annotation.txt
 ```
 
-Input images should be in the `.npy` format, include 3 channels. (e.g. `i, r, g`)
+Input images should be in the `.npy` format, including 3 channels. (e.g. `i, r, g`)
