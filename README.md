@@ -1,5 +1,7 @@
 # AstroYOLO: A CNN and Transformer Hybrid Deep Learning Object Detection Model for Blue Horizontal-branch Stars
 
+![GitHub](https://img.shields.io/github/license/dzxrly/AstroYOLO?style=for-the-badge)
+
 ![Network Structure](./img/network_structure.png)
 
 ![RPCurve&PredictionVis](./img/img_2.png)
@@ -16,7 +18,7 @@ Create a new conda environment and install the required packages:
 ```shell
 conda create -n astro_yolo python=3.10
 conda activate astro_yolo
-pip3 install torch torchvision torchaudio
+conda install pytorch torchvision torchaudio pytorch-cuda=11.7 -c pytorch -c nvidia
 pip3 install astropy reproject opencv-python matplotlib scipy scikit-learn tqdm tensorboard tensorboardX torchinfo
 ```
 
