@@ -1,6 +1,6 @@
 # AstroYOLO: A CNN and Transformer Hybrid Deep Learning Object Detection Model for Blue Horizontal-branch Stars
 
-![GitHub](https://img.shields.io/github/license/dzxrly/AstroYOLO?style=for-the-badge)
+![GitHub](https://img.shields.io/github/license/dzxrly/AstroYOLO) [![doi - 10.1093/pasj/psad071](https://img.shields.io/badge/doi-10.1093%2Fpasj%2Fpsad071-8be9fd)](https://doi.org/10.1093/pasj/psad071)
 
 ![Network Structure](./img/network_structure.png)
 
